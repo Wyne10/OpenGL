@@ -37,16 +37,27 @@ int main()
         "{\n"
         "   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
         "}\n\0", GL_FRAGMENT_SHADER);
+    Shader* yellowFragmentShader = new Shader("#version 330 core\n"
+        "out vec4 FragColor;\n"
+        "void main()\n"
+        "{\n"
+        "   FragColor = vec4(1.0f, 1.0f, 0.0f, 1.0f);\n"
+        "}\n\0", GL_FRAGMENT_SHADER);
     vertexShader->printError();
     fragmentShader->printError();
+    yellowFragmentShader->printError();
 
     Shader* shaders[] = { vertexShader, fragmentShader };
+    Shader* yellowShaders[] = { vertexShader, yellowFragmentShader };
 
     ShaderProgram* shaderProgram = new ShaderProgram(shaders, 2);
+    ShaderProgram* yellowShaderProgram = new ShaderProgram(yellowShaders, 2);
     shaderProgram->printError();
+    yellowShaderProgram->printError();
 
     delete vertexShader;
     delete fragmentShader;
+    delete yellowFragmentShader;
 #pragma endregion
 
 #pragma region Vertices
@@ -89,6 +100,7 @@ int main()
         shaderProgram->useProgram();
         glBindVertexArray(VAOs[0]);
         glDrawArrays(GL_TRIANGLES, 0, 3);
+        yellowShaderProgram->useProgram();
         glBindVertexArray(VAOs[1]);
         glDrawArrays(GL_TRIANGLES, 0, 3);
 
