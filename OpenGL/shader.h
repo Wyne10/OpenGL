@@ -1,19 +1,23 @@
 #pragma once
 #include <glad/glad.h>
+#include <string>
+#include <fstream>
+#include <sstream>
 
 namespace Shaders {
 	class Shader
 	{
 	private:
-		const char* shaderSource;
+		char* shaderSource;
 		GLenum shaderType;
 		GLuint shader;
 
+		void loadShader(const char* path);
 		void createShader();
 		void compileShader();
 		void deleteShader();
 	public:
-		Shader(const char* shaderSource, GLenum shaderType);
+		Shader(const char* shader, GLenum shaderType, bool load = false);
 		~Shader();
 		void printError();
 		GLuint getShader();

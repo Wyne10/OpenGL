@@ -27,18 +27,8 @@ int main()
 #pragma endregion
 
 #pragma region Shaders
-    Shader* vertexShader = new Shader("#version 330 core\n"
-        "layout (location = 0) in vec3 aPos;\n"
-        "void main()\n"
-        "{\n"
-        "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
-        "}\0", GL_VERTEX_SHADER);
-    Shader* fragmentShader = new Shader("#version 330 core\n"
-        "out vec4 FragColor;\n"
-        "void main()\n"
-        "{\n"
-        "   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
-        "}\n\0", GL_FRAGMENT_SHADER);
+    Shader* vertexShader = new Shader("F:\\Coding\\C++\\OpenGL\\OpenGL\\vertex.vert", GL_VERTEX_SHADER, true);
+    Shader* fragmentShader = new Shader("F:\\Coding\\C++\\OpenGL\\OpenGL\\fragment.frag", GL_FRAGMENT_SHADER, true);
     vertexShader->printError();
     fragmentShader->printError();
 
@@ -53,9 +43,10 @@ int main()
 
 #pragma region Vertices
     float vertices[] = {
-    -0.5f, -0.5f, 0.0f,
-     0.5f, -0.5f, 0.0f,
-     0.0f,  0.5f, 0.0f
+        // positions         // colors
+         0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,   // bottom right
+        -0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,   // bottom left
+         0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f    // top 
     };
     float rectVertices[] = {
      0.5f,  0.5f, 0.0f,  // top right
@@ -70,8 +61,10 @@ int main()
 #pragma endregion
 
     Object* triangle = new Object(vertices, sizeof(vertices), GL_STATIC_DRAW);
-    triangle->vertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    triangle->vertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
     triangle->enableVertexAttribArray(0);
+    triangle->vertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+    triangle->enableVertexAttribArray(1);
     triangle->unbindBuffers();
 
     ElementObject* rectangle = new ElementObject(rectVertices, indices, sizeof(rectVertices), sizeof(indices), GL_STATIC_DRAW);
@@ -89,11 +82,22 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT);
 
         shaderProgram->useProgram();
-        rectangle->draw(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+        //float timeValue = glfwGetTime();
+        //float greenValue = (sin(timeValue) / 2.0f) + 0.5f;
+        //int vertexColorLocation = glGetUniformLocation(shaderProgram->getShaderProgram(), "ourColor");
+        //glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
+
+        //rectangle->draw(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        triangle->draw(GL_TRIANGLES, 0, 3);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
+
+    delete triangle;
+    delete rectangle;
+    delete shaderProgram;
 
     glfwTerminate();
     return 0;

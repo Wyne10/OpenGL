@@ -2,9 +2,13 @@
 #include <iostream>
 
 #pragma region Shader
-Shaders::Shader::Shader(const char* shaderSource, GLenum shaderType)
+Shaders::Shader::Shader(const char* shader, GLenum shaderType, bool load)
 {
-	this->shaderSource = shaderSource;
+	if (load)
+		loadShader(shader);
+	else
+		this->shaderSource = _strdup(shader);
+
 	this->shaderType = shaderType;
 	createShader();
 	compileShader();
@@ -13,6 +17,29 @@ Shaders::Shader::Shader(const char* shaderSource, GLenum shaderType)
 Shaders::Shader::~Shader()
 {
 	deleteShader();
+}
+
+void Shaders::Shader::loadShader(const char* path)
+{
+	std::string shaderCode;
+	std::ifstream shaderFile;
+
+	shaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+	try
+	{
+		shaderFile.open(path);
+		std::stringstream shaderStream;
+		shaderStream << shaderFile.rdbuf();
+		shaderFile.close();
+
+		shaderCode = shaderStream.str();
+	}
+	catch (std::ifstream::failure e)
+	{
+		std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ" << std::endl;
+	}
+
+	shaderSource = _strdup(shaderCode.c_str());
 }
 
 void Shaders::Shader::createShader()
