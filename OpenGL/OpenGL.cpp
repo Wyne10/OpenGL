@@ -26,9 +26,12 @@ int main()
 
 #pragma region Vertices
     float vertices[] = {
-    -0.5f, -0.5f, 0.0f,
-     0.5f, -0.5f, 0.0f,
-     0.0f,  0.5f, 0.0f
+     0.0f, -0.5f, 0.0f,
+     1.0f, -0.5f, 0.0f,
+     0.5f,  0.5f, 0.0f,
+     -1.0f, -0.5f, 0.0f,
+     0.0f, -0.5f, 0.0f,
+     -0.5f,  0.5f, 0.0f
     };
 
     GLuint VBO, VAO;
@@ -78,7 +81,7 @@ int main()
 
         shaderProgram->useProgram();
         glBindVertexArray(VAO);
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glDrawArrays(GL_TRIANGLES, 0, 6);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
