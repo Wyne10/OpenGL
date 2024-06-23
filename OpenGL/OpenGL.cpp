@@ -57,12 +57,27 @@ int main()
      0.5f, -0.5f, 0.0f,
      0.0f,  0.5f, 0.0f
     };
+    float rectVertices[] = {
+     0.5f,  0.5f, 0.0f,  // top right
+     0.5f, -0.5f, 0.0f,  // bottom right
+    -0.5f, -0.5f, 0.0f,  // bottom left
+    -0.5f,  0.5f, 0.0f   // top left 
+    };
+    unsigned int indices[] = {  // note that we start from 0!
+        0, 1, 3,   // first triangle
+        1, 2, 3    // second triangle
+    };
 #pragma endregion
 
     Object* triangle = new Object(vertices, sizeof(vertices), GL_STATIC_DRAW);
     triangle->vertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     triangle->enableVertexAttribArray(0);
     triangle->unbindBuffers();
+
+    ElementObject* rectangle = new ElementObject(rectVertices, indices, sizeof(rectVertices), sizeof(indices), GL_STATIC_DRAW);
+    rectangle->vertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    rectangle->enableVertexAttribArray(0);
+    rectangle->unbindBuffers();
 
     std::vector<InputBind*> binds = createInputList(window);
 
@@ -74,7 +89,7 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT);
 
         shaderProgram->useProgram();
-        triangle->draw(GL_TRIANGLES, 0, 3);
+        rectangle->draw(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
