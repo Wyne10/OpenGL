@@ -4,10 +4,12 @@
 #include "window.h"
 #include "input.h"
 #include "shader.h"
+#include "drawing.h"
 
 using namespace Window;
 using namespace Input;
 using namespace Shaders;
+using namespace Drawing;
 
 void initGlfw();
 void initGlad();
@@ -55,16 +57,12 @@ int main()
      0.5f, -0.5f, 0.0f,
      0.0f,  0.5f, 0.0f
     };
-
-    GLuint VBO, VAO;
-    glGenVertexArrays(1, &VAO);
-    glGenBuffers(1, &VBO);
-    glBindVertexArray(VAO);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
 #pragma endregion
+
+    Object* triangle = new Object(vertices, sizeof(vertices), GL_STATIC_DRAW);
+    triangle->vertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    triangle->enableVertexAttribArray(0);
+    triangle->unbindBuffers();
 
     std::vector<InputBind*> binds = createInputList(window);
 
@@ -76,8 +74,7 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT);
 
         shaderProgram->useProgram();
-        glBindVertexArray(VAO);
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        triangle->draw(GL_TRIANGLES, 0, 3);
 
         glfwSwapBuffers(window);
         glfwPollEvents();

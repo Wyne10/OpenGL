@@ -140,12 +140,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="C:\Users\Сергей\Downloads\src\glad.c" />
+    <ClCompile Include="drawing.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="OpenGL.cpp" />
     <ClCompile Include="shader.cpp" />
     <ClCompile Include="window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="drawing.h" />
     <ClInclude Include="Include\glad\glad.h" />
     <ClInclude Include="Include\KHR\khrplatform.h" />
     <ClInclude Include="input.h" />

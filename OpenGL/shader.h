@@ -27,8 +27,10 @@ namespace Shaders {
 		void createProgram();
 		void attachShader(Shader* shader);
 		void linkProgram();
+		void deleteProgram();
 	public:
 		ShaderProgram(Shader* shaders[], size_t arraySize);
+		~ShaderProgram();
 		void printError();
 		void useProgram();
 		GLuint getShaderProgram();

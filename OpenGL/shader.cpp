@@ -60,6 +60,11 @@ Shaders::ShaderProgram::ShaderProgram(Shader* shaders[], size_t arraySize)
 	linkProgram();
 }
 
+Shaders::ShaderProgram::~ShaderProgram()
+{
+	deleteProgram();
+}
+
 void Shaders::ShaderProgram::createProgram()
 {
 	shaderProgram = glCreateProgram();
@@ -73,6 +78,11 @@ void Shaders::ShaderProgram::attachShader(Shader* shader)
 void Shaders::ShaderProgram::linkProgram()
 {
 	glLinkProgram(shaderProgram);
+}
+
+void Shaders::ShaderProgram::deleteProgram()
+{
+	glDeleteProgram(shaderProgram);
 }
 
 void Shaders::ShaderProgram::printError()
